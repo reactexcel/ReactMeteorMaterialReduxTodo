@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import Tasks from 'TodoApp/collections/Tasks';
 
 Meteor.methods({
-  addTask: function (text) {
+  addTask: (text) => {
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
       throw new Meteor.Error('not-authorized');

@@ -1,57 +1,35 @@
 import { Component } from 'react';
 import ReactMixin from 'react-mixin';
 
-import TodoHeader from './TodoHeader';
-import TodoList from './TodoList';
-
 import Tasks from 'TodoApp/collections/Tasks';
-import 'TodoApp/client/css/TodoApp.import.css'
 
-@ReactMixin.decorate(ReactMeteorData)
-export default class TodoMain extends Component {
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import MyAwesomeReactComponent from './MyAwesomeReactComponent';
+import AppBar from 'material-ui/AppBar';
+import {List, ListItem} from 'material-ui/List';
+import Checkbox from 'material-ui/Checkbox';
+import FlatButton from 'material-ui/FlatButton';
 
-  state = {
-    hideCompleted: false
-  };
 
-  getMeteorData() {
-    Meteor.subscribe('tasks');
-
-    let taskFilter = {};
-
-    if (this.state.hideCompleted) {
-      taskFilter.checked = {$ne: true};
-    }
-
-    const tasks = Tasks.find(taskFilter, {sort: {createdAt: -1}}).fetch();
-    const incompleteCount = Tasks.find({checked: {$ne: true}}).count();
-
-    return {
-      tasks,
-      incompleteCount,
-      user: Meteor.user()
-    };
+export default class TodoMain extends React.Component {
+  constructor(props){
+    super(props);
   }
 
-  handleToggleHideCompleted = (e) => {
-    this.setState({ hideCompleted: e.target.checked });
-  };
-
   render() {
-    if (!this.data.tasks) {
-      // loading
-      return null;
-    }
-
     return (
-        <div className="container">
-          <TodoHeader
-              incompleteCount={this.data.incompleteCount}
-              hideCompleted={this.state.hideCompleted}
-              toggleHideCompleted={this.handleToggleHideCompleted}
-          />
-          <TodoList tasks={this.data.tasks} />
-        </div>
+        <MuiThemeProvider>
+          <div>
+            <AppBar
+              title="Todo List"
+              iconClassNameRight="muidocs-icon-navigation-expand-more"
+              iconElementRight={<FlatButton label="Add" />}
+            />
+            <List>
+                <ListItem leftCheckbox={<Checkbox />} primaryText="Task1"></ListItem>
+            </List>
+          </div>
+        </MuiThemeProvider>
     );
   }
 };
