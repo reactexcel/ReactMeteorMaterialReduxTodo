@@ -3,8 +3,18 @@ import { createAction } from 'redux-actions';
 export const ADD_TODO = "ADD_TODO";
 export const CHECK_TODO = "CHECK_TODO";
 export const FETCH_TODO = "FETCH_TODO";
+export const DELETE_TODO = "DELETE_TODO"
 
 import Tasks from '../../../collections/Tasks'
+
+
+export function deleteTodo(id){
+	Meteor.call('todo.delete',id)
+	console.log(id)
+	return createAction(DELETE_TODO)({
+		id: id
+	})
+}
 
 export function fetchTodo(){
 	return function (dispatch,getState){

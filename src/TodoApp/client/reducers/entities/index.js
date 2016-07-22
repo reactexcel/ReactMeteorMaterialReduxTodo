@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-import {ADD_TODO, CHECK_TODO,FETCH_TODO} from '../../actions/todo'
+import {ADD_TODO, CHECK_TODO,FETCH_TODO, DELETE_TODO} from '../../actions/todo'
 
 export function entities(state = Immutable.fromJS([]),action){
 	
@@ -16,8 +16,17 @@ export function entities(state = Immutable.fromJS([]),action){
   		return todo
   	})
   }else if(action.type === FETCH_TODO){
-  	 console.log(action.payload)
   	 state = Immutable.fromJS(action.payload)
+  }else if(action.type === DELETE_TODO){
+  	let id = action.payload.id;
+  	let index = -1
+  	state.forEach( (todo,i) => {  		
+  		if(todo.get('_id') == id){
+  			index = i;
+  		}
+
+  	})
+	state = state.delete(index)	
   }
   return state;
 }

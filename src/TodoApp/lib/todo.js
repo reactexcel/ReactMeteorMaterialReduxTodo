@@ -21,6 +21,7 @@ Meteor.methods({
   },
   'todo.delete': function (taskId) {
     var task = Tasks.findOne(taskId);
+    check(taskId, String)
     // if (task.private && task.owner !== Meteor.userId()) {
     //   // If the task is private, make sure only the owner can delete it
     //   throw new Meteor.Error('not-authorized');
