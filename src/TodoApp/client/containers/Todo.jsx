@@ -14,7 +14,12 @@ class TodoContainer extends React.Component {
 	}
 	render() {
 	    return ( 
-          <TodoApp ui={this.props.ui} todos={this.props.entities} onAddTodo={this.props.addTodo} />
+          <TodoApp 
+            ui={this.props.ui} 
+            todos={this.props.entities} 
+            onAddTodo={this.props.addTodo} 
+            onCheckTodo={this.props.checkTodo}
+            />
       )
   }
 }
@@ -31,6 +36,9 @@ const mapDispatchToProps = (dispatch) => {   //es6 way
      return {
         addTodo: (text) => {
             dispatch(todo_actions.addTodo(text))
+        },
+        checkTodo: (id) => {
+            dispatch(todo_actions.checkTodo(id))
         }
      }
 }
