@@ -1,12 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import Tasks from 'TodoApp/collections/Tasks';
+import { Tracker } from 'meteor/tracker'
 
 // This code only runs on the server
-Meteor.publish('tasks', function () {
-  return Tasks.find({
-    $or: [
-      { private: {$ne: true} },
-      { owner: this.userId }
-    ]
-  });
-});
+Tracker.autorun(function(){
+	Meteor.publish('tasks', function () {
+	  return Tasks.find();
+	});
+})

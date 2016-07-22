@@ -56,7 +56,7 @@ export default class TodoMain extends React.Component {
               title="Todo List"
               iconElementRight={<FlatButton label="Add" onTouchTap={this.addTodo} />}
             />
-            <TodoList onCheckTodo={this.props.onCheckTodo} todos={this.props.todos}/>
+            <TodoList onFetchTodo={this.props.onFetchTodo} onCheckTodo={this.props.onCheckTodo} todos={this.props.todos}/>
             <Dialog
               title="Add Todo"
               actions={actions}
@@ -85,5 +85,6 @@ TodoMain.propTypes = {
   todos: React.PropTypes.any.isRequired,
   ui: React.PropTypes.any.isRequired,
   onAddTodo: React.PropTypes.func.isRequired,
-  onCheckTodo: React.PropTypes.func.isRequired
+  onCheckTodo: React.PropTypes.func.isRequired,
+  onFetchTodo: React.PropTypes.func.isRequired
 }
