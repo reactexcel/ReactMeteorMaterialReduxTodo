@@ -14,6 +14,7 @@ export default class TodoList extends React.Component {
   }
   render() {
     let todoList = this.props.todos.map( (todo,i) => {
+      console.log(todo)
         return (
           <ListItem leftCheckbox={<Checkbox onCheck={ () => { this.todoCheck(todo) }} checked={todo.checked} />} primaryText={todo.text} key={i}></ListItem>
         )
