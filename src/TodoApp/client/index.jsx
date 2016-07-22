@@ -2,9 +2,10 @@ import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-import TodoApp from './components/TodoApp';
+import TodoContainer from './containers/Todo';
+import store from './store/index'
+import { Provider } from 'react-redux'
 
-import 'TodoApp/methods';
 
 Accounts.ui.config({
   passwordSignupFields: "USERNAME_ONLY"
@@ -19,5 +20,5 @@ injectTapEventPlugin();
 
 Meteor.startup(function () {
   // Use Meteor.startup to render the component after the page is ready
-  ReactDOM.render(<TodoApp />, document.getElementById("render-target"));
+  ReactDOM.render( <Provider store={store}><TodoContainer /></Provider>, document.getElementById("render-target"));
 });
