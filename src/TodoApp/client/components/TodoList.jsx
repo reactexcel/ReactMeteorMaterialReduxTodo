@@ -4,6 +4,7 @@ import {List, ListItem} from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import Delete from 'material-ui/svg-icons/action/delete';
+import CircularProgress from 'material-ui/CircularProgress';
 
 
 
@@ -17,10 +18,12 @@ export default class TodoList extends React.Component {
   componentWillMount(){
     this.taskSub = Meteor.subscribe('tasks')
     let self = this
+    self.props.onLoading(true)
     Meteor.autorun(function() {
       //this will wait for subscription to get ready
       if (self.taskSub.ready()) {
         self.props.onFetchTodo() 
+        self.props.onLoading(false)
       }  
     });    
   }
@@ -34,6 +37,7 @@ export default class TodoList extends React.Component {
       this.props.onDeleteTodo(todo._id)
   }
   render() {
+
     let todoList = this.props.todos.map( (todo,i) => {
         return (
           <ListItem leftCheckbox={<Checkbox 
@@ -43,11 +47,17 @@ export default class TodoList extends React.Component {
             primaryText={todo.text} key={todo._id}></ListItem>
         )
     })
+    let loading = ''
+    if(this.props.ui.loading){
+      loading = <CircularProgress />;
+    }
     return (
+        <div>
+        {loading}
         <List>
             {todoList}
         </List>
-        
+        </div>
     );
   }
 };

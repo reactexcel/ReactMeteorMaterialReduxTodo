@@ -21,6 +21,7 @@ class TodoContainer extends React.Component {
             onCheckTodo={this.props.checkTodo}
             onFetchTodo={this.props.fetchTodo}
             onDeleteTodo={this.props.deleteTodo}
+            onLoading={this.props.loading}
             />
       )
   }
@@ -47,6 +48,9 @@ const mapDispatchToProps = (dispatch) => {   //es6 way
         },
         deleteTodo: (id) => {
           dispatch(todo_actions.deleteTodo(id))
+        },
+        loading: () => {
+          dispatch(todo_actions.loading())
         }
      }
 }
