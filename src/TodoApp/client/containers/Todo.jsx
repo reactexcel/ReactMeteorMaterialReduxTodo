@@ -44,13 +44,13 @@ const mapDispatchToProps = (dispatch) => {   //es6 way
             dispatch(todo_actions.checkTodo(id,checked))
         },
         fetchTodo: () => {
-          dispatch(todo_actions.fetchTodo())
+            dispatch(todo_actions.fetchTodo())
         },
         deleteTodo: (id) => {
-          dispatch(todo_actions.deleteTodo(id))
+            dispatch(todo_actions.deleteTodo(id))
         },
-        loading: () => {
-          dispatch(todo_actions.loading())
+        loading: (show) => {
+            dispatch(todo_actions.loading(show))
         }
      }
 }

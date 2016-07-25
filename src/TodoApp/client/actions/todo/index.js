@@ -10,7 +10,9 @@ import Tasks from '../../../collections/Tasks'
 
 
 export function loading(show){
-	return createAction(LOADING)(show)
+	return createAction(LOADING)({
+		action: show
+	})
 }
 
 export function deleteTodo(id){

@@ -19,11 +19,12 @@ export default class TodoList extends React.Component {
     this.taskSub = Meteor.subscribe('tasks')
     let self = this
     self.props.onLoading(true)
-    Meteor.autorun(function() {
+    Meteor.autorun(function(c) {
       //this will wait for subscription to get ready
       if (self.taskSub.ready()) {
         self.props.onFetchTodo() 
         self.props.onLoading(false)
+        c.stop() //only run this one time
       }  
     });    
   }
@@ -53,7 +54,9 @@ export default class TodoList extends React.Component {
     }
     return (
         <div>
-        {loading}
+        <div style={{width: '100%', margin: '0px auto'}}>
+          {loading}
+        </div>
         <List>
             {todoList}
         </List>
