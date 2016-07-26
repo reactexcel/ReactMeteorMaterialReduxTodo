@@ -58,7 +58,6 @@ export function addTodoAction(todo){
 export function checkTodo(id,checked){
 	Meteor.call('todo.mark',id,checked);
 	//didn't use async this time since didn't not need any ressponse from server
-	console.log(checked)
 	return createAction(CHECK_TODO)({
 		id: id,
 		checked: checked
