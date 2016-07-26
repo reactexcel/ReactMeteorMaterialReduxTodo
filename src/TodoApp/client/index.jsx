@@ -10,10 +10,6 @@ import { Provider } from 'react-redux'
 import { Router, Route, browserHistory } from 'react-router'
 
 
-Accounts.ui.config({
-  passwordSignupFields: "USERNAME_ONLY"
-});
-
 import injectTapEventPlugin from 'react-tap-event-plugin';
  
 // Needed for onTouchTap 

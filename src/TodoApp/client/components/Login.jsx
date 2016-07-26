@@ -10,6 +10,9 @@ import TextField from 'material-ui/TextField';
 
 
 export default class Login extends React.Component {
+  static contextTypes = {
+        muiTheme: React.PropTypes.object.isRequired
+  }
   constructor(props){
     super(props);
     this.state = {
@@ -23,14 +26,42 @@ export default class Login extends React.Component {
     this.openDialog = this.openDialog.bind(this)
     this.signup = this.signup.bind(this)
   }
-  static contextTypes = {
-        muiTheme: React.PropTypes.object.isRequired
+  componentWillMount(){
+    let self = this
+    Meteor.autorun(function(c) {
+      self.autorun = c;
+      if (Meteor.userId()) {
+        self.props.router.push('/todo')
+        c.stop() //only run this one time
+      }  
+    });    
+    this.props.onGetUser()
+  }
+  componentWillUnmount(){
+    this.autorun.stop()
   }
   login(){
+    this.props.onLoginUser(this.state.email, this.state.password).then( () => {
 
+    }).catch( (err) => {
+        alert(err.toString())
+    })
   }
   signup(){
-
+    if(this.state.password !== this.state.conf_password){
+      alert('Passwords Dont Match')
+    }else{
+      this.props.onCreateUser(this.state.email,this.state.password).then( () => {
+        this.setState({
+          email: '',
+          password: '',
+          conf_password : '',
+          signup_dialog: false
+        })
+      }).catch( (error) => {
+          alert(error.toString())
+      })
+    }
   }
   openDialog(){
     this.setState({signup_dialog: true})
@@ -39,7 +70,6 @@ export default class Login extends React.Component {
     this.setState({signup_dialog: false})
   }
   render() {
-    console.log(this.context)
     const actions = [
         <FlatButton
           label="Cancel"
@@ -57,7 +87,7 @@ export default class Login extends React.Component {
         <MuiThemeProvider>
           <div>
             <AppBar
-              title="Login"
+              title={"Login"} 
               iconElementRight={<FlatButton label="SignUp" onTouchTap={this.openDialog} />}
             />
             <Dialog
@@ -74,14 +104,14 @@ export default class Login extends React.Component {
                     <div>
                       <TextField 
                         style={{width: '100%'}}
-                        onChange={ (evt) => {  this.setState({email: evt.targe.value}) }}
+                        onChange={ (evt) => {  this.setState({email: evt.target.value}) }}
                         value={this.state.email}
                         floatingLabelText="Email" />
                     </div>
                     <div>
                       <TextField 
                         style={{width: '100%'}}
-                        onChange={ (evt) => {  this.setState({password: evt.targe.value}) }}
+                        onChange={ (evt) => {  this.setState({password: evt.target.value}) }}
                         type="password"
                         value={this.state.passowrd}
                         floatingLabelText="Password" />
@@ -90,7 +120,7 @@ export default class Login extends React.Component {
                     <div>
                       <TextField 
                         style={{width: '100%'}}
-                        onChange={ (evt) => {  this.setState({conf_password: evt.targe.value}) }}
+                        onChange={ (evt) => {  this.setState({conf_password: evt.target.value}) }}
                         type="password"
                         value={this.state.passowrd}
                         floatingLabelText="Confirm Password" />
@@ -117,14 +147,14 @@ export default class Login extends React.Component {
                     <div>
                       <TextField 
                         style={{width: '100%'}}
-                        onChange={ (evt) => {  this.setState({email: evt.targe.value}) }}
+                        onChange={ (evt) => {  this.setState({email: evt.target.value}) }}
                         value={this.state.email}
                         floatingLabelText="Email" />
                     </div>
                     <div>
                       <TextField 
                         style={{width: '100%'}}
-                        onChange={ (evt) => {  this.setState({password: evt.targe.value}) }}
+                        onChange={ (evt) => {  this.setState({password: evt.target.value}) }}
                         type="password"
                         value={this.state.passowrd}
                         floatingLabelText="Password" />
@@ -143,4 +173,7 @@ export default class Login extends React.Component {
 };
 
 Login.propTypes = {
+  onCreateUser: React.PropTypes.func.isRequired,
+  onLoginUser: React.PropTypes.func.isRequired,
+  onGetUser : React.PropTypes.func.isRequired
 }

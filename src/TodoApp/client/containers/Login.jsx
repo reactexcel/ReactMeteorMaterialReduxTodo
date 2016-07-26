@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 
 import Login from './../components/Login'
  
-import * as todo_actions from './../actions/todo/index'
+import * as login_actions from './../actions/users/index'
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+import {withRouter} from 'react-router'
+
 
 class LoginContainer extends React.Component {
 	constructor(props){
@@ -18,9 +21,13 @@ class LoginContainer extends React.Component {
   }
 
 	render() {
+
 	    return ( 
           <Login 
             ui={this.props.ui}
+            onCreateUser={this.props.createUser}
+            onLoginUser={this.props.loginUser}
+            router={this.props.router}
             />
       )
   }
@@ -39,11 +46,16 @@ function mapStateToProps(state,props){
 }
 const mapDispatchToProps = (dispatch) => {   //es6 way
      return {
-        
+        createUser: (email,password) => {
+            return dispatch(login_actions.createUser(email,password))
+        },
+        loginUser: (email,password) => {
+          return dispatch(login_actions.loginUser(email,password))
+        }
      }
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginContainer)
+)(LoginContainer))

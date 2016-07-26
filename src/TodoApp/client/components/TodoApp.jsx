@@ -11,6 +11,9 @@ import TextField from 'material-ui/TextField';
 import TodoList from './TodoList'
 
 export default class TodoMain extends React.Component {
+  static contextTypes = {
+        muiTheme: React.PropTypes.object.isRequired
+  }
   constructor(props){
     super(props);
     this.state = {
@@ -20,6 +23,15 @@ export default class TodoMain extends React.Component {
     this.addTodo = this.addTodo.bind(this)
     this.submitTodo = this.submitTodo.bind(this)
     this.handleClose = this.handleClose.bind(this)
+  }
+  componentWillMount(){
+    Meteor.autorun(function(c) {
+      if (!Meteor.userId()) {
+        self.props.router.push('/')
+        c.stop() //only run this one time
+      }  
+    }); 
+    this.props.onGetUser()
   }
   addTodo() {
     this.setState({open: true});
@@ -34,6 +46,7 @@ export default class TodoMain extends React.Component {
     })
     this.handleClose()
   }
+ 
   render() {
      const actions = [
       <FlatButton
@@ -48,14 +61,24 @@ export default class TodoMain extends React.Component {
         onTouchTap={this.submitTodo}
       />,
     ];
-
+    let title = ''
+    if(this.props.users){
+      title = <div  style={
+                        {
+                          fontFamily: this.context.muiTheme.fontFamily, 
+                          color: this.context.muiTheme.palette.accent1Color,
+                          textAlign: 'left'
+                        }
+          }>Welcome {this.props.users.username}</div>
+    }
     return (
         <MuiThemeProvider>
           <div>
             <AppBar
-              title="Todo List"
+              title={"Todo List"}
               iconElementRight={<FlatButton label="Add" onTouchTap={this.addTodo} />}
             />
+            {title}
             <TodoList {...this.props}/>
             <Dialog
               title="Add Todo"

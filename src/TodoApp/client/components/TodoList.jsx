@@ -20,6 +20,7 @@ export default class TodoList extends React.Component {
     let self = this
     self.props.onLoading(true)
     Meteor.autorun(function(c) {
+      self.autorun = c;
       //this will wait for subscription to get ready
       if (self.taskSub.ready()) {
         self.props.onFetchTodo() 
@@ -30,6 +31,7 @@ export default class TodoList extends React.Component {
   }
   componentWillUnmount(){
     this.taskSub.stop()
+    this.autorun.stop()
   }
   todoCheck(todo) {
       this.props.onCheckTodo(todo._id, !todo.checked)

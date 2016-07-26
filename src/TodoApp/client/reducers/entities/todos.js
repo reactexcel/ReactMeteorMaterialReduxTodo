@@ -2,7 +2,7 @@ import Immutable from 'immutable';
 
 import {ADD_TODO, CHECK_TODO,FETCH_TODO, DELETE_TODO} from '../../actions/todo'
 
-export function entities(state = Immutable.fromJS([]),action){
+export function todos(state = Immutable.fromJS([]),action){
 	
   if(action.type === ADD_TODO){
   	 state = state.unshift(Immutable.fromJS(action.payload))
